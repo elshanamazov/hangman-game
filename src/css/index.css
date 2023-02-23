@@ -2,12 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-#app {
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	font-family: 'Phudu', cursive;
-	line-height: 1.5;
+@layer base {
+	html {
+		font-family: 'Phudu', cursive;
+	}
+}
+
+@layer components {
+	#app {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		line-height: 1.5;
+	}
+
+	.logo {
+		@apply text-6xl text-gray-800 font-bold mb-10;
+	}
+	
+	.button-primary {
+		@apply border-2 border-gray-700 rounded-lg text-gray-700 text-4xl p-5 shadow-2xl hover:shadow-lg transition-shadow duration-200 ease-in-out focus:shadow-lg;
+	}
 }
