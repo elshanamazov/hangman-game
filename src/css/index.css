@@ -18,11 +18,33 @@
 		line-height: 1.5;
 	}
 
+	.game {
+		display: flex;
+		flex-direction: column;
+		justify-content: center
+	}
+
 	.logo {
 		@apply text-6xl text-gray-800 font-bold mb-10;
 	}
 	
 	.button-primary {
 		@apply border-2 border-gray-700 rounded-lg text-gray-700 text-4xl p-5 shadow-2xl hover:shadow-lg transition-shadow duration-200 ease-in-out focus:shadow-lg;
+	}
+
+	.button-send {
+		@apply mb-5 text-3xl p-3;
+	}
+
+	.new-word {
+		@apply text-6xl text-gray-800 font-bold mb-10;
+	}
+
+	.input {
+		@apply text-2xl text-gray-800 font-bold mb-5 border-gray-700 rounded-lg p-2 border-2;
+	}
+
+	.out {
+		@apply text-4xl text-red-800 font-bold ;
 	}
 }
