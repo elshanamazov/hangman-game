@@ -44,7 +44,7 @@ function createElements() {
 
 function checkLetter() {
   const value = input.value;
-  const lastLetter = value.slice(-1);
+  const lastLetter = value.slice(-1).toLocaleLowerCase();
   if (chosenWord.includes(lastLetter) && !correctArr.includes(lastLetter)) {
     correctArr.push(lastLetter);
     wrongArr.push(lastLetter);
