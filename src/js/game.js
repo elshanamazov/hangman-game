@@ -8,8 +8,7 @@ const btnSend = document.createElement("button");
 const wrongLetterOut = document.createElement("p");
 const correctArr = [];
 const wrongArr = [];
-const word = getRandomWord(WORDS);
-sessionStorage.setItem('chosenWord', word)
+const chosenWord = getRandomWord(WORDS);
 
 btnSend.addEventListener("click", () => {
   const value = input.value;
@@ -19,7 +18,6 @@ btnSend.addEventListener("click", () => {
 
 
 function createElements() {
-  const chosenWord = sessionStorage.getItem('chosenWord')
   for (let i = 0; i < chosenWord.length; i++) {
     newWord.innerHTML += `<span id="letter_${i}">_</span> `;
   }
@@ -36,7 +34,6 @@ function createElements() {
 	btnSend.classList.add('button-send');
   gameDiv.appendChild(wrongLetterOut);
 	wrongLetterOut.classList.add('out')
-  // gameDiv.appendChild();
 }
 
 function checkLetter(lastLetter) {
