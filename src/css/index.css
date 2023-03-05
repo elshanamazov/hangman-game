@@ -36,7 +36,7 @@
 		@apply mb-5 text-3xl p-3;
 	}
 
-	.new-word {
+	.game__chosen-field {
 		@apply text-6xl text-gray-800 font-bold mb-10;
 	}
 
@@ -44,27 +44,27 @@
 		@apply text-2xl text-gray-800 font-bold mb-5 border-gray-600 rounded-lg p-2 border-2;
 	}
 
-	.out {
-		@apply text-4xl text-gray-800 font-bold mb-5;
+	.game__wrong-field {
+		@apply text-2xl text-gray-800 font-bold mb-5;
 	}
 
-	.last-letter {
+	.game__wrong-letters {
 		@apply text-red-500;
 	}
 
-	.lives {
-		@apply text-green-700;
+	.game__lives-numb {
+		@apply text-green-600 text-3xl;
 	}
 
-	.lives-out {
+	.game__lives {
 		@apply text-gray-800 text-2xl;
 	}
 
-	.winlost-out {
+	.game__winlost-out {
 		@apply mb-7;
 	}
 
-	.chosen-word {
+	.game__chosen-word {
 		@apply text-red-500;
 	}
 }
