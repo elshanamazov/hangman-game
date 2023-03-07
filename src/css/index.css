@@ -28,12 +28,16 @@
 		@apply text-6xl text-gray-800 font-bold mb-10;
 	}
 	
-	.button-primary {
+	.btn-primary {
 		@apply border-2 border-gray-800 rounded-lg text-gray-800 text-4xl p-5 shadow-2xl hover:shadow-lg transition-shadow duration-200 ease-in-out focus:shadow-lg;
 	}
 
-	.button-send {
+	.btn-send {
 		@apply mb-5 text-3xl p-3;
+	}
+
+	.btn-play {
+		@apply mt-5;
 	}
 
 	.game__chosen-field {
