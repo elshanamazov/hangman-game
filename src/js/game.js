@@ -31,7 +31,11 @@ btnPlay.addEventListener("click", () => {
 function createElements() {
 	btnSend.innerHTML = "send";
 	wrongLetterOut.innerHTML = "Wrong letters: ";
-	livesOut.innerHTML += `You have <span class="game__lives-numb">${lives}</span> lives`;
+	// Обрати внимание: здесь ты просто добавляешь текст в livesOut, НЕ очищая того, что было ранеее. Когда игра начинается заново, то текст добавляется повторно, вот и получаются дубликаты. То же самое происходит ещё в нескольких местах.
+	// В этой ситуации нужно проста заменить += на = (на строчке ниже я заменил, но в остальных местах лучше поищи самостоятельно)
+	livesOut.innerHTML = `You have <span class="game__lives-numb">${lives}</span> lives`;
+
+	// В ИДЕАЛЕ: тебе нужно отрефакторить код таким образом, чтобы были отдельные функции, создающие нужные элементы. Эти отдельные функции будут создавать каждый раз заного livesOut, input и так далее.
 
 	gameDiv.appendChild(newWord);
 	newWord.classList.add('game__chosen-field');
@@ -78,23 +82,41 @@ function checkLetter(lastLetter) {
 }
 
 function showLives() {
-	livesOut.innerHTML = `You have <span class="game__lives-numb">${--lives}</span> lives`;
-	if (lives < 9) {
+	// Здесь лучше сперва проверять, остались ли жизни, а далее уже действовать. И проверять надо на <1, так как если у пользователья одна жизнь, то вычитать уже ничего не надо – просто выводим проигрышь и всё
+
+	// livesOut.innerHTML = `You have <span class="game__lives-numb">${--lives}</span> lives`;
+	// if (lives < 9) {
+		// resultOfGame();
+		// winLostOut.innerHTML = "You lost :("
+		// chosenWordOut.innerHTML = `The Word was <span class="game__chosen-word">[${chosenWord}]</span>`;
+	// } 
+
+	// Лучше вот так:
+	if (lives > 1) {
+		livesOut.innerHTML = `You have <span class="game__lives-numb">${--lives}</span> lives`;
+	} else {
 		resultOfGame();
 		winLostOut.innerHTML = "You lost :("
 		chosenWordOut.innerHTML = `The Word was <span class="game__chosen-word">[${chosenWord}]</span>`;
-	} 
+	}
 }
 
 function resultOfGame() {
+	// Здесь тебе обязаьтельно также нужно обнулять массивы correctArr и wrongArr
+
 	gameDiv.innerHTML = "";
-	gameDiv.appendChild(winLostOut);
+	gameDiv.append(winLostOut, chosenWordOut, btnPlay)
+	// gameDiv.appendChild(winLostOut);
+	// gameDiv.appendChild(chosenWordOut);
+	// gameDiv.appendChild(btnPlay);
+
 	winLostOut.classList.add('game__winlost-out');
-	gameDiv.appendChild(chosenWordOut);
-	gameDiv.appendChild(btnPlay);
-	btnPlay.innerHTML = 'Play again';
-	btnPlay.classList.add('btn-primary');
-	btnPlay.classList.add('btn-play');
+	// btnPlay.innerHTML = 'Play again';
+	btnPlay.innerText = 'Play again';
+
+	// Можно сразу добавлять несколько классов, перечисляя их через запятую
+	btnPlay.classList.add('btn-primary', 'btn-play');
+	// btnPlay.classList.add('btn-play');
 }
 
 export function startGame() {
