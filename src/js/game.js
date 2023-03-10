@@ -15,7 +15,6 @@ const correctArr = [];
 const wrongArr = [];
 let lives = 10;
 
-
 btnSend.addEventListener("click", () => {
 	const value = input.value;
 	const lastLetter = value.slice(-1).toLocaleLowerCase();
@@ -23,9 +22,8 @@ btnSend.addEventListener("click", () => {
 	input.value = "";
 });
 
-
 btnPlay.addEventListener("click", () => {
-	startGame();
+	return startGame();
 });
 
 function createElements() {
@@ -45,13 +43,13 @@ function createElements() {
 	wrongLetterOut.classList.add('game__wrong-field');
 	gameDiv.appendChild(livesOut);
 	livesOut.classList.add('game__lives');
-}
+};
 
 function createWordLines() {
 	for (let i = 0; i < chosenWord.length; i++) {
 		newWord.innerHTML += ` <span id="letter_${i}">_</span`;
 	}
-}
+};
 
 function checkLetter(lastLetter) {
 	const uniqueChosenWord = [...new Set(chosenWord)].join('');
@@ -75,16 +73,16 @@ function checkLetter(lastLetter) {
 		winLostOut.innerHTML = "You Win :)"
 		chosenWordOut.innerHTML = `<p class="game__chosen-word">Great job!</p>`;
 	}
-}
+};
 
 function showLives() {
 	livesOut.innerHTML = `You have <span class="game__lives-numb">${--lives}</span> lives`;
-	if (lives < 9) {
+	if (lives < 9){
 		resultOfGame();
 		winLostOut.innerHTML = "You lost :("
 		chosenWordOut.innerHTML = `The Word was <span class="game__chosen-word">[${chosenWord}]</span>`;
-	} 
-}
+	};
+};
 
 function resultOfGame() {
 	gameDiv.innerHTML = "";
@@ -95,7 +93,7 @@ function resultOfGame() {
 	btnPlay.innerHTML = 'Play again';
 	btnPlay.classList.add('btn-primary');
 	btnPlay.classList.add('btn-play');
-}
+};
 
 export function startGame() {
 	getRandomWord(WORDS);
