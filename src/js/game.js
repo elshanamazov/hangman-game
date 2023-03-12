@@ -15,7 +15,6 @@ const correctArr = [];
 const wrongArr = [];
 let lives = 10;
 
-
 btnSend.addEventListener("click", () => {
 	const value = input.value;
 	const lastLetter = value.slice(-1).toLocaleLowerCase();
@@ -23,8 +22,8 @@ btnSend.addEventListener("click", () => {
 	input.value = "";
 });
 
-
 btnPlay.addEventListener("click", () => {
+	chosenWord = getRandomWord(WORDS);
 	startGame();
 });
 
@@ -35,13 +34,18 @@ function createElements() {
 	btnSend.classList.add('btn-primary', 'btn-send');
 	wrongLetterOut.classList.add('game__wrong-field');
 	livesOut.classList.add('game__lives');
-}
+
+	input.placeholder = 'Type a letter';
+	btnSend.innerText = "send";
+	wrongLetterOut.innerHTML = "Wrong letters: ";
+	livesOut.innerHTML = `You have <span class="game__lives-numb">${lives}</span> lives`;
+};
 
 function createWordLines() {
 	for (let i = 0; i < chosenWord.length; i++) {
 		newWord.innerHTML += ` <span id="letter_${i}">_</span`;
 	}
-}
+};
 
 function checkLetter(lastLetter) {
 	const uniqueChosenWord = [...new Set(chosenWord)].join('');
@@ -65,16 +69,17 @@ function checkLetter(lastLetter) {
 		winLostOut.innerHTML = "You Win :)"
 		chosenWordOut.innerHTML = `<p class="game__chosen-word">Great job!</p>`;
 	}
-}
+};
 
 function showLives() {
-	livesOut.innerHTML = `You have <span class="game__lives-numb">${--lives}</span> lives`;
-	if (lives < 9) {
+	if (lives > 1) {
+		livesOut.innerHTML = `You have <span class="game__lives-numb">${--lives}</span> lives`;
+	} else {
 		resultOfGame();
 		winLostOut.innerHTML = "You lost :("
 		chosenWordOut.innerHTML = `The Word was <span class="game__chosen-word">[${chosenWord}]</span>`;
-	} 
-}
+	}
+};
 
 function resultOfGame() {
 	lives = 10;
@@ -85,12 +90,9 @@ function resultOfGame() {
 	gameDiv.append(winLostOut, chosenWordOut, btnPlay)
 
 	winLostOut.classList.add('game__winlost-out');
-	gameDiv.appendChild(chosenWordOut);
-	gameDiv.appendChild(btnPlay);
-	btnPlay.innerHTML = 'Play again';
-	btnPlay.classList.add('btn-primary');
-	btnPlay.classList.add('btn-play');
-}
+	btnPlay.innerText = 'Play again';
+	btnPlay.classList.add('btn-primary', 'btn-play');
+};
 
 export function startGame() {
 	getRandomWord(WORDS);
