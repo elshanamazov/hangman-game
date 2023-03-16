@@ -65,9 +65,9 @@ function checkLetter(lastLetter) {
 	}
 
 	if (uniqueChosenWord.length === correctArr.length) {
-		resultOfGame();
-		winLostOut.innerHTML = "You Win :)"
-		chosenWordOut.innerHTML = `<p class="game__chosen-word">Great job!</p>`;
+			resultOfGame();
+			winLostOut.innerHTML = "You Win :)"
+			chosenWordOut.innerHTML = `<p class="game__chosen-word">Great job!</p>`;
 	}
 };
 
