@@ -5,7 +5,6 @@ const gameDiv = document.getElementById("game");
 const newWord = document.createElement("h2");
 const btnSend = document.createElement("button");
 const btnPlay = document.createElement("button");
-const livesOut = document.createElement("p");
 const winLostOut = document.createElement("p");
 const chosenWordOut = document.createElement("p");
 let chosenWord = getRandomWord(WORDS);
@@ -13,8 +12,6 @@ const correctArr = [];
 const wrongArr = [];
 let lives = 10;
 
-
-// Вынес функцию createWordLines, чтобы она не привязывалась к конкретному элементу HTML, а просто возвращала разметку, которую потом можно будет вставить куда угодно 
 function createWordLines(word) {
   let linesHTML = '';
 	for (let i = 0; i < word.length; i++) {
@@ -23,7 +20,6 @@ function createWordLines(word) {
   return linesHTML;
 };
 
-// Вынес всё, что касается создания инпута, в функцию createInput
 function createInput() {
   const input = document.createElement("input");
   input.classList.add('input');
@@ -32,17 +28,23 @@ function createInput() {
   return input;
 };
 
-// То же самое делаем с wrongLetterOut
+function createlivesOut() {
+	const livesOut = document.createElement("p");
+	livesOut.classList.add('game__lives');
+	livesOut.innerHTML = `You have <span class="game__lives-numb">${lives}</span> lives`;
+	livesOut.id = 'livesOut';
+	return livesOut;
+}
+
 function createWrongLetterOut() {
 	const wrongLetterOut = document.createElement("p");
 	wrongLetterOut.classList.add('game__wrong-field');
 	wrongLetterOut.innerHTML = "Wrong letters: ";
 	wrongLetterOut.id = 'wrongLetters'
 	return wrongLetterOut;
-}
+};
 
 btnSend.addEventListener("click", (event) => {
-	// Здесь мы можем не подвязываться к глобальной переменной input – ведь теперь у нас еэё не будет, мы создаём инпут внутри функции createInput и переменая input не видна снаружи – а обращаться к инпуту через getElementById (для этого, соответственно, надо дать айдишник инпуту в функции createInput)
 	const input = document.getElementById('letterInput')
 	const lastLetter = input.value.slice(-1).toLocaleLowerCase();
 	checkLetter(lastLetter);
@@ -57,17 +59,15 @@ btnPlay.addEventListener("click", () => {
 function createElements() {
 	const input = createInput()
 	const wrongLetterOut = createWrongLetterOut()
+	const livesOut = createlivesOut();
 
 	gameDiv.append(newWord, input, btnSend, wrongLetterOut, livesOut);
 	newWord.classList.add('game__chosen-field');
 	btnSend.classList.add('btn-primary', 'btn-send');
-	livesOut.classList.add('game__lives');
 	btnSend.innerText = "send";
-	livesOut.innerHTML = `You have <span class="game__lives-numb">${lives}</span> lives`;
 };
 
 function checkLetter(lastLetter) {
-	// Хорошее решение с Set, креативно)
 	const uniqueChosenWord = [...new Set(chosenWord)].join('');
 	if (chosenWord.includes(lastLetter) && !correctArr.includes(lastLetter)) {
 		correctArr.push(lastLetter);
@@ -80,8 +80,7 @@ function checkLetter(lastLetter) {
 		});
 	} else if (!wrongArr.includes(lastLetter)) {
 		wrongArr.push(lastLetter);
-		// Здесь, как и в случае с инпутом, нам нужно цепляться за айди, так как глоабльная переменная wrongLetterOut больше не существует
-		const wrongLetterOut = document.getElementById('wrongLetters')
+		const wrongLetterOut = document.getElementById('wrongLetters');
 		wrongLetterOut.innerHTML += `<span class="game__wrong-letters">${lastLetter}</span>`;
 		showLives();
 	}
@@ -95,6 +94,7 @@ function checkLetter(lastLetter) {
 
 function showLives() {
 	if (lives > 1) {
+		const livesOut = document.getElementById('livesOut');
 		livesOut.innerHTML = `You have <span class="game__lives-numb">${--lives}</span> lives`;
 	} else {
 		resultOfGame();
@@ -109,7 +109,7 @@ function resultOfGame() {
 	wrongArr.length = 0;
 	gameDiv.innerHTML = "";
 	newWord.innerHTML = "";
-	gameDiv.append(winLostOut, chosenWordOut, btnPlay)
+	gameDiv.append(winLostOut, chosenWordOut, btnPlay);
 
 	winLostOut.classList.add('game__winlost-out');
 	btnPlay.innerText = 'Play again';
