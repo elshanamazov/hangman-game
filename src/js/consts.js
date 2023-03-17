@@ -1,1 +1,1 @@
-export const WORDS = ["programming", "code", "frontend"];
+export const WORDS = ['programming', 'code', 'frontend'];

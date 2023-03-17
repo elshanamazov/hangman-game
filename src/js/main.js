@@ -1,6 +1,5 @@
-import { startGame } from "./game";
+import { startGame } from './game';
 
-const startButton = document.getElementById("btn");
+const startButton = document.getElementById('btn');
 
-startButton.addEventListener("click", startGame);
-
+startButton.addEventListener('click', startGame);

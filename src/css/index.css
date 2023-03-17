@@ -3,72 +3,72 @@
 @tailwind utilities;
 
 @layer base {
-	html {
-		font-family: 'Phudu', cursive;
-	}
+  html {
+    font-family: 'Phudu', cursive;
+  }
 }
 
 @layer components {
-	#app {
-		min-height: 100vh;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		line-height: 1.5;
-		padding-left: 15px;
-		padding-right: 15px;
-	}
+  #app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.5;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 
-	.game {
-		@apply flex flex-col  justify-center text-6xl text-gray-800 font-bold text-center;
-	}
+  .game {
+    @apply flex flex-col  justify-center text-6xl text-gray-800 font-bold text-center;
+  }
 
-	.logo {
-		@apply text-6xl text-gray-800 font-bold mb-10;
-	}
-	
-	.btn-primary {
-		@apply border-2 border-gray-800 rounded-lg text-gray-800 text-4xl p-5 shadow-2xl hover:shadow-lg transition-shadow duration-200 ease-in-out focus:shadow-lg;
-	}
+  .logo {
+    @apply text-6xl text-gray-800 font-bold mb-10;
+  }
 
-	.btn-send {
-		@apply mb-5 text-3xl p-3;
-	}
+  .btn-primary {
+    @apply border-2 border-gray-800 rounded-lg text-gray-800 text-4xl p-5 shadow-2xl hover:shadow-lg transition-shadow duration-200 ease-in-out focus:shadow-lg;
+  }
 
-	.btn-play {
-		@apply mt-5;
-	}
+  .btn-send {
+    @apply mb-5 text-3xl p-3;
+  }
 
-	.game__chosen-field {
-		@apply text-6xl text-gray-800 font-bold mb-10;
-	}
+  .btn-play {
+    @apply mt-5;
+  }
 
-	.input {
-		@apply text-2xl text-gray-800 font-bold mb-5 border-gray-600 rounded-lg p-2 border-2;
-	}
+  .game__chosen-field {
+    @apply text-6xl text-gray-800 font-bold mb-10;
+  }
 
-	.game__wrong-field {
-		@apply text-2xl text-gray-800 font-bold mb-5;
-	}
+  .input {
+    @apply text-2xl text-gray-800 font-bold mb-5 border-gray-600 rounded-lg p-2 border-2;
+  }
 
-	.game__wrong-letters {
-		@apply text-red-500;
-	}
+  .game__wrong-field {
+    @apply text-2xl text-gray-800 font-bold mb-5;
+  }
 
-	.game__lives-numb {
-		@apply text-green-600 text-3xl;
-	}
+  .game__wrong-letters {
+    @apply text-red-500;
+  }
 
-	.game__lives {
-		@apply text-gray-800 text-2xl;
-	}
+  .game__lives-numb {
+    @apply text-green-600 text-3xl;
+  }
 
-	.game__winlost-out {
-		@apply mb-7;
-	}
+  .game__lives {
+    @apply text-gray-800 text-2xl;
+  }
 
-	.game__chosen-word {
-		@apply text-red-500;
-	}
+  .game__winlost-out {
+    @apply mb-7;
+  }
+
+  .game__chosen-word {
+    @apply text-red-500;
+  }
 }
