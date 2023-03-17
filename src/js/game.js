@@ -3,11 +3,8 @@ import {getRandomWord} from './utils';
 
 const gameDiv = document.getElementById("game");
 const newWord = document.createElement("h2");
-const input = document.createElement("input");
 const btnSend = document.createElement("button");
 const btnPlay = document.createElement("button");
-const wrongLetterOut = document.createElement("p");
-const livesOut = document.createElement("p");
 const winLostOut = document.createElement("p");
 const chosenWordOut = document.createElement("p");
 let chosenWord = getRandomWord(WORDS);
@@ -15,9 +12,41 @@ const correctArr = [];
 const wrongArr = [];
 let lives = 10;
 
-btnSend.addEventListener("click", () => {
-	const value = input.value;
-	const lastLetter = value.slice(-1).toLocaleLowerCase();
+function createWordLines(word) {
+  let linesHTML = '';
+	for (let i = 0; i < word.length; i++) {
+		linesHTML += `<span class="mx-1" id="letter_${i}">_</span>`;
+	}
+  return linesHTML;
+};
+
+function createInput() {
+  const input = document.createElement("input");
+  input.classList.add('input');
+  input.placeholder = 'Type a letter';
+  input.id = 'letterInput';
+  return input;
+};
+
+function createlivesOut() {
+	const livesOut = document.createElement("p");
+	livesOut.classList.add('game__lives');
+	livesOut.innerHTML = `You have <span class="game__lives-numb">${lives}</span> lives`;
+	livesOut.id = 'livesOut';
+	return livesOut;
+}
+
+function createWrongLetterOut() {
+	const wrongLetterOut = document.createElement("p");
+	wrongLetterOut.classList.add('game__wrong-field');
+	wrongLetterOut.innerHTML = "Wrong letters: ";
+	wrongLetterOut.id = 'wrongLetters'
+	return wrongLetterOut;
+};
+
+btnSend.addEventListener("click", (event) => {
+	const input = document.getElementById('letterInput')
+	const lastLetter = input.value.slice(-1).toLocaleLowerCase();
 	checkLetter(lastLetter);
 	input.value = "";
 });
@@ -28,23 +57,14 @@ btnPlay.addEventListener("click", () => {
 });
 
 function createElements() {
+	const input = createInput()
+	const wrongLetterOut = createWrongLetterOut()
+	const livesOut = createlivesOut();
+
 	gameDiv.append(newWord, input, btnSend, wrongLetterOut, livesOut);
 	newWord.classList.add('game__chosen-field');
-	input.classList.add('input');
 	btnSend.classList.add('btn-primary', 'btn-send');
-	wrongLetterOut.classList.add('game__wrong-field');
-	livesOut.classList.add('game__lives');
-
-	input.placeholder = 'Type a letter';
 	btnSend.innerText = "send";
-	wrongLetterOut.innerHTML = "Wrong letters: ";
-	livesOut.innerHTML = `You have <span class="game__lives-numb">${lives}</span> lives`;
-};
-
-function createWordLines() {
-	for (let i = 0; i < chosenWord.length; i++) {
-		newWord.innerHTML += ` <span id="letter_${i}">_</span`;
-	}
 };
 
 function checkLetter(lastLetter) {
@@ -60,6 +80,7 @@ function checkLetter(lastLetter) {
 		});
 	} else if (!wrongArr.includes(lastLetter)) {
 		wrongArr.push(lastLetter);
+		const wrongLetterOut = document.getElementById('wrongLetters');
 		wrongLetterOut.innerHTML += `<span class="game__wrong-letters">${lastLetter}</span>`;
 		showLives();
 	}
@@ -73,6 +94,7 @@ function checkLetter(lastLetter) {
 
 function showLives() {
 	if (lives > 1) {
+		const livesOut = document.getElementById('livesOut');
 		livesOut.innerHTML = `You have <span class="game__lives-numb">${--lives}</span> lives`;
 	} else {
 		resultOfGame();
@@ -87,7 +109,7 @@ function resultOfGame() {
 	wrongArr.length = 0;
 	gameDiv.innerHTML = "";
 	newWord.innerHTML = "";
-	gameDiv.append(winLostOut, chosenWordOut, btnPlay)
+	gameDiv.append(winLostOut, chosenWordOut, btnPlay);
 
 	winLostOut.classList.add('game__winlost-out');
 	btnPlay.innerText = 'Play again';
@@ -98,5 +120,5 @@ export function startGame() {
 	getRandomWord(WORDS);
 	gameDiv.innerHTML = "";
 	createElements();
-	createWordLines();
+	newWord.innerHTML = createWordLines(chosenWord)
 };
