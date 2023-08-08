@@ -75,7 +75,9 @@ function checkLetter(lastLetter) {
     const chosenWordArr = Array.from(chosenWord);
     chosenWordArr.forEach((letter, i) => {
       if (letter === lastLetter) {
-        document.getElementById(`letter_${i}`).innerHTML = lastLetter;
+        const letterElement = document.getElementById(`letter_${i}`);
+        letterElement.textContent = lastLetter;
+        // document.getElementById(`letter_${i}`).innerHTML = lastLetter;
       }
     });
   } else if (!wrongArr.includes(lastLetter)) {
@@ -86,9 +88,11 @@ function checkLetter(lastLetter) {
   }
 
   if (uniqueChosenWord.length === correctArr.length) {
-    resultOfGame();
-    winLostOut.innerHTML = 'You Win :)';
+    winLostOut.textContent = 'You Win :)';
     chosenWordOut.innerHTML = `<p class="game__chosen-word">Great job!</p>`;
+    requestAnimationFrame(() => {
+      resultOfGame();
+    });
   }
 }
 
