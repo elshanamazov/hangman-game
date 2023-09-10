@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: Akzidenz;
+    font-weight: 700;
+    font-style: normal;
+    src: url('/fonts/akzidenz/AkzidenzGroteskPro-BoldEx.otf') format('opentype');
+  }
+
+  @font-face {
+    font-family: Akzidenz;
+    font-weight: 500;
+    font-style: normal;
+    src: url('/fonts/akzidenz/AkzidenzGroteskPro-Md.otf') format('opentype');
+  }
+
+  @font-face {
+    font-family: Akzidenz;
+    font-weight: 400;
+    font-style: normal;
+    src: url('/fonts/akzidenz/AkzidenzGroteskPro-Regular.otf')
+      format('opentype');
+  }
+
+  html {
+    font-family: Akzidenz, system-ui, sans-serif;
+  }
+
+  body {
+    background-color: #f5f5f5;
+  }
+}
+
+@layer components {
+  #app {
+    @apply h-screen flex flex-col justify-center items-center text-gray-900 dark:text-white dark:bg-zinc-800 pr-4 pl-4;
+  }
+
+  .logo {
+    @apply text-2xl font-bold xs:text-3xl sm:text-5xl;
+  }
+
+  .logo-sm {
+    @apply text-2xl hidden sm:block;
+  }
+
+  .btn-primary {
+    @apply flex justify-center items-center text-white bg-slate-400 rounded-md font-medium px-5 py-2 hover:bg-slate-500 dark:bg-indigo-500 dark:hover:bg-indigo-700 transition-colors ease-in-out disabled:opacity-20 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply border border-gray-900 rounded-md transition-colors ease-in-out hover:bg-slate-200 dark:border-white dark:hover:bg-zinc-600;
+  }
+
+  .placeholders-wrap {
+    @apply flex flex-row flex-wrap;
+  }
+
+  .letter {
+    @apply text-xl xxs:text-2xl sm:text-3xl p-2 font-medium;
+  }
+
+  .keyboard {
+    @apply max-w-2xl mt-5 flex justify-center flex-wrap;
+  }
+
+  .btn-keyboard {
+    @apply w-8 h-8 xs:w-10 xs:h-10 sm:w-14 sm:h-14 m-1 sm:m-2;
+  }
+
+  .hangman-img {
+    @apply w-24 h-24 xxs:w-32 xxs:h-32  sm:w-56 sm:h-56;
+  }
+
+  .result-header {
+    @apply text-2xl font-bold mt-4;
+  }
+
+  .result-header.win {
+    @apply text-lime-600;
+  }
+
+  .result-header.lose {
+    @apply text-red-600;
+  }
+
+  .result-text {
+    @apply mt-4;
+  }
+
+  .result-word {
+    @apply font-medium uppercase;
+  }
+}

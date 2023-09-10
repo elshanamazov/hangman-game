@@ -1,128 +1,140 @@
-import { WORDS } from './consts';
-import { getRandomWord } from './utils';
+import { KEYBOARD_LETTERS, WORDS } from './consts';
 
 const gameDiv = document.getElementById('game');
-const newWord = document.createElement('h2');
-const btnSend = document.createElement('button');
-const btnPlay = document.createElement('button');
-const winLostOut = document.createElement('p');
-const chosenWordOut = document.createElement('p');
-let chosenWord = getRandomWord(WORDS);
-const correctArr = [];
-const wrongArr = [];
-let lives = 10;
+const logoh1 = document.getElementById('logo');
+let triesLeft;
+let winCount;
 
-function createWordLines(word) {
-  let linesHTML = '';
-  for (let i = 0; i < word.length; i++) {
-    linesHTML += `<span class="mx-1" id="letter_${i}">_</span>`;
-  }
-  return linesHTML;
-}
+const createPlaceholderHTML = () => {
+  const word = sessionStorage.getItem('word');
+  const wordArr = Array.from(word);
 
-function createInput() {
-  const input = document.createElement('input');
-  input.classList.add('input');
-  input.placeholder = 'Type a letter';
-  input.id = 'letterInput';
-  return input;
-}
+  const placeholderHTML = wordArr.reduce(
+    (acc, curr, i) => acc + ` <p id ="letter_${i}" class="letter">_</p>`,
+    ''
+  );
+  return `<div id="placeholders" class="placeholders-wrap">${placeholderHTML}</div>`;
+};
 
-function createlivesOut() {
-  const livesOut = document.createElement('p');
-  livesOut.classList.add('game__lives');
-  livesOut.innerHTML = `You have <span class="game__lives-numb">${lives}</span> lives`;
-  livesOut.id = 'livesOut';
-  return livesOut;
-}
+const creatKeyboard = () => {
+  logoh1.classList.add('logo-sm');
+  const keyboard = document.createElement('div');
+  keyboard.classList.add('keyboard');
+  keyboard.id = 'keyboard';
 
-function createWrongLetterOut() {
-  const wrongLetterOut = document.createElement('p');
-  wrongLetterOut.classList.add('game__wrong-field');
-  wrongLetterOut.innerHTML = 'Wrong letters: ';
-  wrongLetterOut.id = 'wrongLetters';
-  return wrongLetterOut;
-}
+  const keyboardHTML = KEYBOARD_LETTERS.reduce((acc, curr) => {
+    return (
+      acc +
+      `<button class="btn-primary btn-keyboard" id=${curr}>${curr}</button>`
+    );
+  }, '');
 
-btnSend.addEventListener('click', (event) => {
-  const input = document.getElementById('letterInput');
-  const lastLetter = input.value.slice(-1).toLocaleLowerCase();
-  checkLetter(lastLetter);
-  input.value = '';
-});
+  keyboard.innerHTML = keyboardHTML;
 
-btnPlay.addEventListener('click', () => {
-  chosenWord = getRandomWord(WORDS);
-  startGame();
-});
+  return keyboard;
+};
 
-function createElements() {
-  const input = createInput();
-  const wrongLetterOut = createWrongLetterOut();
-  const livesOut = createlivesOut();
+const createHangmanImg = () => {
+  const img = document.createElement('img');
+  img.src = 'img/hg-0.png';
+  img.alt = 'hangman image';
+  img.id = 'hangman-img';
+  img.classList.add('hangman-img');
 
-  gameDiv.append(newWord, input, btnSend, wrongLetterOut, livesOut);
-  newWord.classList.add('game__chosen-field');
-  btnSend.classList.add('btn-primary', 'btn-send');
-  btnSend.innerText = 'send';
-}
+  return img;
+};
 
-function checkLetter(lastLetter) {
-  const uniqueChosenWord = [...new Set(chosenWord)].join('');
-  if (chosenWord.includes(lastLetter) && !correctArr.includes(lastLetter)) {
-    correctArr.push(lastLetter);
-    wrongArr.push(lastLetter);
-    const chosenWordArr = Array.from(chosenWord);
-    chosenWordArr.forEach((letter, i) => {
-      if (letter === lastLetter) {
-        const letterElement = document.getElementById(`letter_${i}`);
-        letterElement.textContent = lastLetter;
-        // document.getElementById(`letter_${i}`).innerHTML = lastLetter;
+const checkletter = (letter) => {
+  const word = sessionStorage.getItem('word');
+  const inputLetter = letter.toLocaleLowerCase();
+
+  if (!word.includes(inputLetter)) {
+    const triesCounter = document.getElementById('tries-left');
+    triesLeft -= 1;
+    triesCounter.innerText = triesLeft;
+
+    const hangmanImg = document.getElementById('hangman-img');
+    hangmanImg.src = `img/hg-${10 - triesLeft}.png`;
+
+    if (triesLeft === 0) {
+      stopGame('lose');
+    }
+  } else {
+    const wordArr = Array.from(word);
+
+    wordArr.forEach((currLetter, i) => {
+      if (currLetter === inputLetter) {
+        winCount += 1;
+
+        if (winCount === word.length) {
+          stopGame('win');
+          return;
+        }
+        document.getElementById(`letter_${i}`).innerText =
+          inputLetter.toUpperCase();
       }
     });
-  } else if (!wrongArr.includes(lastLetter)) {
-    wrongArr.push(lastLetter);
-    const wrongLetterOut = document.getElementById('wrongLetters');
-    wrongLetterOut.innerHTML += `<span class="game__wrong-letters">${lastLetter}</span>`;
-    showLives();
+  }
+};
+
+const stopGame = (status) => {
+  document.getElementById('placeholders').remove();
+  document.getElementById('tries').remove();
+  document.getElementById('keyboard').remove();
+  document.getElementById('quit').remove();
+
+  const word = sessionStorage.getItem('word');
+
+  if (status === 'win') {
+    document.getElementById('hangman-img').src = 'img/hg-win.png';
+    document.getElementById('game').innerHTML +=
+      '<h2 class="result-header win">You won :)</h2>';
+  } else if (status === 'lose') {
+    document.getElementById('game').innerHTML +=
+      '<h2 class="result-header lose">You lost :(</h2>';
+  } else if (status === 'quit') {
+    logoh1.classList.remove('logo-sm');
+    document.getElementById('hangman-img').remove();
   }
 
-  if (uniqueChosenWord.length === correctArr.length) {
-    winLostOut.textContent = 'You Win :)';
-    chosenWordOut.innerHTML = `<p class="game__chosen-word">Great job!</p>`;
-    requestAnimationFrame(() => {
-      resultOfGame();
-    });
-  }
-}
+  document.getElementById(
+    'game'
+  ).innerHTML += `<p class="result-text">The word was: <span class="result-word">[${word}]</span></p><button id="play-again" class="btn-primary px-5 mt-5 py-2">Play again</button>`;
+  document.getElementById('play-again').onclick = startGame;
+};
 
-function showLives() {
-  if (lives > 1) {
-    const livesOut = document.getElementById('livesOut');
-    livesOut.innerHTML = `You have <span class="game__lives-numb">${--lives}</span> lives`;
-  } else {
-    resultOfGame();
-    winLostOut.innerHTML = 'You lost :(';
-    chosenWordOut.innerHTML = `The Word was <span class="game__chosen-word">[${chosenWord}]</span>`;
-  }
-}
+export const startGame = () => {
+  triesLeft = 10;
+  winCount = 0;
+  const randomIndex = Math.floor(Math.random() * WORDS.length);
+  const wordToGuess = WORDS[randomIndex];
+  sessionStorage.setItem('word', wordToGuess);
+  gameDiv.innerHTML = createPlaceholderHTML();
+  gameDiv.innerHTML += `<p id="tries" class="mt-2">TRIES LEFT: <span id="tries-left" class="font-bold text-red-600 text-xl">10</span></p>`;
 
-function resultOfGame() {
-  lives = 10;
-  correctArr.length = 0;
-  wrongArr.length = 0;
-  gameDiv.innerHTML = '';
-  newWord.innerHTML = '';
-  gameDiv.append(winLostOut, chosenWordOut, btnPlay);
+  const keyboardDiv = creatKeyboard();
+  keyboardDiv.addEventListener('click', (event) => {
+    if (event.target.tagName.toLowerCase() === 'button') {
+      event.target.disabled = true;
+      checkletter(event.target.id);
+    }
+  });
 
-  winLostOut.classList.add('game__winlost-out');
-  btnPlay.innerText = 'Play again';
-  btnPlay.classList.add('btn-primary', 'btn-play');
-}
+  gameDiv.appendChild(keyboardDiv);
 
-export function startGame() {
-  getRandomWord(WORDS);
-  gameDiv.innerHTML = '';
-  createElements();
-  newWord.innerHTML = createWordLines(chosenWord);
-}
+  const hangmanImg = createHangmanImg();
+
+  gameDiv.prepend(hangmanImg);
+
+  gameDiv.insertAdjacentHTML(
+    'beforeend',
+    '<button id="quit" class="btn-secondary px-2 py-1 absolute top-6 left-4">Quit</button>'
+  );
+
+  document.getElementById('quit').addEventListener('click', () => {
+    const isSure = confirm('Are you sure you want to quit and lose progress?');
+    if (isSure === true) {
+      stopGame('quit');
+    }
+  });
+};
